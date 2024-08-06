@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756149627806",
+    "project_id": "ruthik-gundeti-tiffin-services",
+    "storage_bucket": "ruthik-gundeti-tiffin-services.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756149627806:android:6576f8b1befd1a532e848f",
+        "android_client_info": {
+          "package_name": "com.tiffinbooking"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxiTSZZv9JB-RfHoJMAqgfAfZqSS99cWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

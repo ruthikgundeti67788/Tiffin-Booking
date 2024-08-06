@@ -1,16 +1,15 @@
 package com.tiffinbooking.ui.screen.user_register
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,11 +35,12 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 import com.tiffinbooking.R
-import com.tiffinbooking.ui.localdatabase.TiffinDatabase
 import com.tiffinbooking.ui.extension.checkNull
 import com.tiffinbooking.ui.extension.emailValidation
 import com.tiffinbooking.ui.extension.showMessage
+import com.tiffinbooking.ui.localdatabase.TiffinDatabase
 import com.tiffinbooking.ui.theme.TiffinBookingTheme
 import com.tiffinbooking.ui.theme.gray
 import com.tiffinbooking.ui.theme.orange
@@ -55,7 +55,7 @@ fun UserRegisterScreen(navController: NavController,preference:TiffinDatabase) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
     val cityScroll = rememberScrollState()
-
+    val registerFirebase = FirebaseAuth.getInstance()
     var isShowCity by rememberSaveable { mutableStateOf(false) }
     val cityList =
         listOf(
@@ -480,7 +480,25 @@ fun UserRegisterScreen(navController: NavController,preference:TiffinDatabase) {
                                     shape = RoundedCornerShape(30.dp),
                                     onClick = {
                                         if(validation()) {
-                                            registered = true
+                                            showProgress = true
+                                            registerFirebase.createUserWithEmailAndPassword(
+                                                userEmailAddress.lowercase(),
+                                                userPassword
+                                            )
+                                                .addOnCompleteListener { task ->
+                                                    if (task.isSuccessful) {
+                                                        showProgress = false
+                                                        registered = true
+
+                                                    } else {
+                                                        Toast.makeText(
+                                                            context,
+                                                            task.exception?.message.toString(),
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                        showProgress = false
+                                                    }
+                                                }
 
                                         }
                                     },
@@ -544,7 +562,7 @@ fun UserRegisterScreen(navController: NavController,preference:TiffinDatabase) {
                         registered = false
                     },
                     title = { Text(stringResource(id = R.string.app_name)) },
-                    text = { Text("You have register successfully.") },
+                    text = { Text("You have registered successfully.") },
                     confirmButton = {
                         Button(
                             modifier = Modifier
