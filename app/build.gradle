@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.tiffinbooking'
+    namespace 'com.d3640865.tiffinbooking'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.tiffinbooking"
+        applicationId "com.d3640865.tiffinbooking"
         minSdk 24
         targetSdk 33
         versionCode 1
